@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import java.util.*;
 
 import com.firebase.client.FirebaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
     private DatabaseReference mUserReference;
+    private String currentUser;
 
     private static final String FIREBASE_URL = "https://quickdraw-db.firebaseio.com/";
 
@@ -57,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { deposit(); }
         });
+
+
+        namebox = (TextView)findViewById(R.id.namebox);
+        currentUser = LoginActivity.getCurrentUser();
+        namebox.setText(currentUser);
+
     }
 
     public void getData() {
@@ -91,7 +99,10 @@ public class MainActivity extends AppCompatActivity {
         EditText balanceInput = (EditText) findViewById(R.id.balanceInput);
         String balanceStr = balanceInput.getText().toString();
         float balance = Float.parseFloat((balanceStr));
-        User user = new User(name, balance);
+        Random r = new Random();
+        int pinint = r.nextInt(9999);
+        String pin = String.valueOf(pinint);
+        User user = new User(name, balance, pin);
         if (!name.equals("")) {
             firebaseRef.child(name).setValue(user);
             nameInput.setText("");
