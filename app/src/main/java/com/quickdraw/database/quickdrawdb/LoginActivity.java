@@ -2,10 +2,15 @@ package com.quickdraw.database.quickdrawdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.*;
@@ -19,17 +24,30 @@ public class LoginActivity extends AppCompatActivity {
 
     private static String currentUser;
 
+    ImageView check;
+    ImageView check2;
+    ImageView xmark;
+    ImageView xmark2;
+
+    EditText nameInput;
+    EditText pinInput;
+
     private static final String FIREBASE_URL = "https://quickdraw-db.firebaseio.com/";
 
     private Firebase firebaseRef;
 
-    TextView statusbox;
+//    TextView statusbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.RED);
+            window.setStatusBarColor(Color.rgb(61, 61, 101));
+        }
         setContentView(R.layout.activity_login);
-
 
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase(FIREBASE_URL);
@@ -43,6 +61,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { createDB(); }
         });
+
+        nameInput = (EditText) findViewById(R.id.nameInput);
+        pinInput = (EditText) findViewById(R.id.pinInput);
+
+        check = (ImageView)findViewById(R.id.check);
+        check2 = (ImageView)findViewById(R.id.check2);
+        check.setVisibility(View.INVISIBLE);
+        check2.setVisibility(View.INVISIBLE);
+
+        xmark = (ImageView)findViewById(R.id.xmark);
+        xmark2 = (ImageView)findViewById(R.id.xmark2);
+        xmark.setVisibility(View.INVISIBLE);
+        xmark2.setVisibility(View.INVISIBLE);
     }
 
     public void createDB() {
@@ -88,40 +119,45 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
+        xmark.setVisibility(View.INVISIBLE);
+        xmark2.setVisibility(View.INVISIBLE);
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                statusbox = (TextView)findViewById(R.id.statusbox);
-                EditText nameInput = (EditText) findViewById(R.id.nameInput);
+//                statusbox = (TextView)findViewById(R.id.statusbox);
                 String name = nameInput.getText().toString();
-                if (dataSnapshot.hasChild(name)) {
-                    firebaseRef.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            EditText pinInput = (EditText) findViewById(R.id.pinInput);
-                            String pin = pinInput.getText().toString();
+                if (!name.equals("")) {
+                    if (dataSnapshot.hasChild(name)) {
+                        check.setVisibility(View.VISIBLE);
+                        firebaseRef.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String pin = pinInput.getText().toString();
 
-                            User user = dataSnapshot.getValue(User.class);
-                            if (pin.equals(user.getPin())) {
-                                statusbox.setText("Welcome " + user.getName() + " !");
-                                currentUser = user.getName();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                User user = dataSnapshot.getValue(User.class);
+                                if (pin.equals(user.getPin())) {
+//                                    statusbox.setText("Welcome " + user.getName() + " !");
+                                    check2.setVisibility(View.VISIBLE);
+                                    currentUser = user.getName();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    pinInput.setText("");
+//                                    statusbox.setText("Incorrect pin!");
+                                    xmark2.setVisibility(View.VISIBLE);
+                                }
                             }
-                            else {
-                                pinInput.setText("");
-                                statusbox.setText("Incorrect pin!");
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                }
-                else {
-                    statusbox.setText("The user '" + name + "' does not exist");
+                        });
+                    }
+                    else {
+//                        statusbox.setText("The user '" + name + "' does not exist");
+                        xmark.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -138,4 +174,5 @@ public class LoginActivity extends AppCompatActivity {
     public static String getCurrentUser() {
         return currentUser;
     }
+
 }

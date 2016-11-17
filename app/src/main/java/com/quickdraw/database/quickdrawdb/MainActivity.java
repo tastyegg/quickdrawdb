@@ -1,9 +1,14 @@
 package com.quickdraw.database.quickdrawdb;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textbox;
+    TextView balancebox;
     TextView namebox;
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
@@ -30,25 +35,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.RED);
+            window.setStatusBarColor(Color.rgb(61, 61, 101));
+        }
         setContentView(R.layout.activity_main);
 
-        textbox = (TextView)findViewById(R.id.textbox);
-        textbox.setText("balance");
+        balancebox = (TextView)findViewById(R.id.balancebox);
+        balancebox.setText("balance");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase(FIREBASE_URL);
 
-        findViewById(R.id.enterButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { sendMessage(); }
-        });
+//        findViewById(R.id.enterButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) { sendMessage(); }
+//        });
 
-        findViewById(R.id.dataButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { getData(); }
-        });
+//        findViewById(R.id.dataButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) { getBalance(); }
+//        });
 
         findViewById(R.id.wButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,22 +76,29 @@ public class MainActivity extends AppCompatActivity {
         currentUser = LoginActivity.getCurrentUser();
         namebox.setText(currentUser);
 
+        getBalance();
+
     }
 
-    public void getData() {
-        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
-        String name = nameInput2.getText().toString();
-        if (!name.equals("")) {
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+    }
 
-            namebox = (TextView)findViewById(R.id.namebox);
-            namebox.setText(name);
+    public void getBalance() {
+//        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
+//        String name = nameInput2.getText().toString();
+//        if (!name.equals("")) {
 
-            firebaseRef.child(name).addValueEventListener(new com.firebase.client.ValueEventListener() {
+//            namebox = (TextView)findViewById(R.id.namebox);
+//            namebox.setText(name);
+
+            firebaseRef.child(currentUser).addValueEventListener(new com.firebase.client.ValueEventListener() {
                 @Override
                 public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                    textbox = (TextView)findViewById(R.id.textbox);
+                    balancebox = (TextView)findViewById(R.id.balancebox);
                     User user = dataSnapshot.getValue(User.class);
-                    textbox.setText(Float.toString(user.getBalance()));
+                    balancebox.setText("$" + Float.toString(user.getBalance()));
                 }
 
                 @Override
@@ -89,36 +107,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            nameInput2.setText("");
-        }
+//            nameInput2.setText("");
+//        }
     }
 
-    public void sendMessage() {
-        EditText nameInput = (EditText) findViewById(R.id.nameInput);
-        String name = nameInput.getText().toString();
-        EditText balanceInput = (EditText) findViewById(R.id.balanceInput);
-        String balanceStr = balanceInput.getText().toString();
-        float balance = Float.parseFloat((balanceStr));
-        Random r = new Random();
-        int pinint = r.nextInt(9999);
-        String pin = String.valueOf(pinint);
-        User user = new User(name, balance, pin);
-        if (!name.equals("")) {
-            firebaseRef.child(name).setValue(user);
-            nameInput.setText("");
-            balanceInput.setText("");
-        }
-    }
+//    public void sendMessage() {
+//        EditText nameInput = (EditText) findViewById(R.id.nameInput);
+//        String name = nameInput.getText().toString();
+//        EditText balanceInput = (EditText) findViewById(R.id.balanceInput);
+//        String balanceStr = balanceInput.getText().toString();
+//        float balance = Float.parseFloat((balanceStr));
+//        Random r = new Random();
+//        int pinint = r.nextInt(9999);
+//        String pin = String.valueOf(pinint);
+//        User user = new User(name, balance, pin);
+//        if (!name.equals("")) {
+//            firebaseRef.child(name).setValue(user);
+//            nameInput.setText("");
+//            balanceInput.setText("");
+//        }
+//    }
 
     public void withdraw() {
-        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
-        String name = nameInput2.getText().toString();
-        if (!name.equals("")) {
+//        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
+//        String name = nameInput2.getText().toString();
+//        if (!name.equals("")) {
+//
+//            namebox = (TextView) findViewById(R.id.namebox);
+//            namebox.setText(name);
 
-            namebox = (TextView) findViewById(R.id.namebox);
-            namebox.setText(name);
-
-            firebaseRef.child(name).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
+            firebaseRef.child(currentUser).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
                 @Override
                 public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
@@ -126,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
                     EditText amountInput = (EditText) findViewById(R.id.amountInput);
                     String amount = amountInput.getText().toString();
+                    if (amount.equals("")) return;
                     float fltamount = Float.parseFloat(amount);
 
                     float newBalance = balance - fltamount;
@@ -143,20 +162,22 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+        getBalance();
 
-            nameInput2.setText("");
-        }
+//
+//            nameInput2.setText("");
+//        }
     }
 
     public void deposit() {
-        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
-        String name = nameInput2.getText().toString();
-        if (!name.equals("")) {
+//        EditText nameInput2 = (EditText) findViewById(R.id.nameInput2);
+//        String name = nameInput2.getText().toString();
+//        if (!name.equals("")) {
+//
+//            namebox = (TextView) findViewById(R.id.namebox);
+//            namebox.setText(name);
 
-            namebox = (TextView) findViewById(R.id.namebox);
-            namebox.setText(name);
-
-            firebaseRef.child(name).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
+            firebaseRef.child(currentUser).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
                 @Override
                 public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
@@ -164,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                     EditText amountInput = (EditText) findViewById(R.id.amountInput);
                     String amount = amountInput.getText().toString();
+                    if (amount.equals("")) return;
                     float fltamount = Float.parseFloat(amount);
 
                     float newBalance = balance + fltamount;
@@ -181,9 +203,11 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+        getBalance();
 
-            nameInput2.setText("");
-        }
+//
+//            nameInput2.setText("");
+//        }
     }
 
 }
