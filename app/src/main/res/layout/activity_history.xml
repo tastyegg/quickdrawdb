@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_history"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/custom"
+    tools:context="com.quickdraw.database.quickdrawdb.HistoryActivity">
+
+    <TextView
+        android:text="YOUR \nHISTORY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/titlebox"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Trans2"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/trans2"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/trans1"
+        android:layout_alignStart="@+id/trans1" />
+
+    <TextView
+        android:text="Trans3"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/trans3"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/trans2"
+        android:layout_alignStart="@+id/trans1" />
+
+    <TextView
+        android:text="Trans4"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/trans4"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/trans3"
+        android:layout_alignStart="@+id/trans1" />
+
+    <TextView
+        android:text="Trans5"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/trans5"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/trans4"
+        android:layout_alignStart="@+id/trans1" />
+
+    <TextView
+        android:text="Current Balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:id="@+id/currentbalance"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_below="@+id/titlebox"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="When2"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:id="@+id/when2"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/when1"
+        android:layout_alignStart="@+id/when1" />
+
+    <TextView
+        android:text="When3"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:id="@+id/when3"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/when2"
+        android:layout_alignStart="@+id/when1" />
+
+    <TextView
+        android:text="When4"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:id="@+id/when4"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/when3"
+        android:layout_alignStart="@+id/when1" />
+
+    <TextView
+        android:text="When5"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:id="@+id/when5"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/when4"
+        android:layout_alignStart="@+id/when1" />
+
+    <TextView
+        android:text="Trans1"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/trans1"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/amountbox"
+        android:layout_alignStart="@+id/amountbox" />
+
+    <TextView
+        android:text="When1"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:id="@+id/when1"
+        android:layout_alignBaseline="@+id/trans1"
+        android:layout_alignBottom="@+id/trans1"
+        android:layout_alignStart="@+id/whenbox" />
+
+    <TextView
+        android:text="When"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/customlighter"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:id="@+id/whenbox"
+        android:layout_above="@+id/trans1"
+        android:layout_alignStart="@+id/titlebox" />
+
+    <TextView
+        android:text="Amount"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:textColor="@color/customlighter"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:id="@+id/amountbox"
+        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/currentbalance"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="1080px"
+        android:layout_height="1240px"
+        app:srcCompat="@color/custom2"
+        android:id="@+id/imageView3"
+        android:translationZ="-1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logout"
+        android:id="@+id/logoutButton"
+        android:background="@null"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>

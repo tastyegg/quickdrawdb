@@ -3,9 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#ffffff</color>
     <!--<color name="custom">#E5E4E2</color>-->
     <!--<color name="custom">#6CA6CD</color>-->
     <!--<color name="custom">#3d3d65</color>-->
     <color name="custom">#3d3d65</color>
+    <color name="custom2">#303050</color>
+    <color name="customlight">#505074</color>
+    <color name="customlighter">#636383</color>
 </resources>

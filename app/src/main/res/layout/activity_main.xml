@@ -35,7 +35,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
-        android:id="@+id/button2"
+        android:id="@+id/hButton"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dButton" />
 
@@ -45,30 +45,64 @@
         android:layout_height="wrap_content"
         android:id="@+id/dButton"
         android:layout_marginBottom="18dp"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/hButton"
         android:layout_alignStart="@+id/wButton" />
-
-    <TextView
-        android:text="Balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/balancebox"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        android:layout_below="@+id/namebox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/namebox"
-        android:text="namebox"
+        android:text="namebox \nXD"
         android:textColor="@color/white"
         android:textSize="40dp"
         android:textStyle="bold"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
         android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Current Balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:id="@+id/balancebox"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_below="@+id/namebox"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="1080px"
+        android:layout_height="1240px"
+        app:srcCompat="@color/custom2"
+        android:id="@+id/imageView3"
+        android:translationZ="-1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Choose an action:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/customlighter"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:id="@+id/amountbox"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logout"
+        android:id="@+id/logoutButton"
+        android:background="@null"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

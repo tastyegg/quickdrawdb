@@ -36,15 +36,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private Firebase firebaseRef;
 
-//    TextView statusbox;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.RED);
             window.setStatusBarColor(Color.rgb(61, 61, 101));
         }
         setContentView(R.layout.activity_login);
@@ -124,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                statusbox = (TextView)findViewById(R.id.statusbox);
                 String name = nameInput.getText().toString();
                 if (!name.equals("")) {
                     if (dataSnapshot.hasChild(name)) {
@@ -135,15 +131,14 @@ public class LoginActivity extends AppCompatActivity {
                                 String pin = pinInput.getText().toString();
 
                                 User user = dataSnapshot.getValue(User.class);
+
                                 if (pin.equals(user.getPin())) {
-//                                    statusbox.setText("Welcome " + user.getName() + " !");
                                     check2.setVisibility(View.VISIBLE);
                                     currentUser = user.getName();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
                                     pinInput.setText("");
-//                                    statusbox.setText("Incorrect pin!");
                                     xmark2.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -155,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                         });
                     }
                     else {
-//                        statusbox.setText("The user '" + name + "' does not exist");
                         xmark.setVisibility(View.VISIBLE);
                     }
                 }
@@ -166,9 +160,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
     }
 
     public static String getCurrentUser() {
