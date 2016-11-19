@@ -7,10 +7,12 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -25,7 +27,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     TextView titlebox;
     TextView currentbalance;
-    ImageButton logoutButton;
 
     TextView trans1;
     TextView trans2;
@@ -41,6 +42,8 @@ public class HistoryActivity extends AppCompatActivity {
 
     TextView[] trans = new TextView[5];
     TextView[] whens = new TextView[5];
+
+    ImageButton logoutButton;
 
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
@@ -62,16 +65,10 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase(FIREBASE_URL);
 
         currentUser = LoginActivity.getCurrentUser();
-
-        findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { logout(); }
-        });
 
         titlebox = (TextView)findViewById(R.id.titlebox);
         currentbalance = (TextView)findViewById(R.id.currentbalance);
@@ -105,6 +102,13 @@ public class HistoryActivity extends AppCompatActivity {
         whens[2] = when3;
         whens[3] = when4;
         whens[4] = when5;
+
+        logoutButton = (ImageButton)findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { logout(); }
+        });
+        showButtonTouch(logoutButton);
 
         firebaseRef.child(currentUser).addValueEventListener(new com.firebase.client.ValueEventListener() {
             @Override
@@ -169,6 +173,22 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void showButtonTouch(ImageButton x) {
+        x.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                ImageView image = (ImageView)view;
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    image.setAlpha(0.5f);
+                }
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    image.setAlpha(1.0f);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

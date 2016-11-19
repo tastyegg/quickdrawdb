@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -40,19 +41,20 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView balancebox;
-    TextView namebox;
-    ImageButton logoutButton;
-    EditText amountInput;
-    ImageButton sendButton;
-
     RelativeLayout activity_main;
+    TextView namebox;
+    TextView balancebox;
+    TextView chooseaction;
 
     ImageButton dButton;
     ImageButton wButton;
-
     ImageButton dText;
     ImageButton wText;
+    ImageButton hButton;
+    ImageButton sendButton;
+    ImageButton logoutButton;
+
+    EditText amountInput;
 
     boolean dSelected = false;
     boolean wSelected = false;
@@ -77,79 +79,84 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase(FIREBASE_URL);
 
-        findViewById(R.id.dButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dSelected = true;
-                animateForward(dButton, dText,
-                        0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
-                        0, 244, 0 , 0,
-                        0, -80, 0, -212);
-            }
-        });
-
-        findViewById(R.id.wButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wSelected = true;
-                animateForward(wButton, wText,
-                        0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
-                        0, -244, 0, 0,
-                        0, 94, 0, -212);
-            }
-        });
-
-        findViewById(R.id.dText).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dSelected = true;
-                animateForward(dButton, dText,
-                        0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
-                        0, 244, 0 , 0,
-                        0, -80, 0, -212);
-            }
-        });
-
-        findViewById(R.id.wText).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wSelected = true;
-                animateForward(wButton, wText,
-                        0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
-                        0, -244, 0, 0,
-                        0, 94, 0, -212);
-            }
-        });
-
-        findViewById(R.id.hButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { startActivity(new Intent(MainActivity.this, HistoryActivity.class)); }
-        });
-
-        findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { logout(); }
-        });
-
-        balancebox = (TextView)findViewById(R.id.balancebox);
+        currentUser = LoginActivity.getCurrentUser();
 
         activity_main = (RelativeLayout)findViewById(R.id.activity_main);
 
+        namebox = (TextView)findViewById(R.id.namebox);
+        balancebox = (TextView)findViewById(R.id.balancebox);
+        chooseaction = (TextView)findViewById(R.id.chooseaction);
+
         dButton = (ImageButton)findViewById(R.id.dButton);
         wButton = (ImageButton)findViewById(R.id.wButton);
-
         dText = (ImageButton)findViewById(R.id.dText);
         wText = (ImageButton)findViewById(R.id.wText);
+        hButton = (ImageButton)findViewById(R.id.hButton);
+        sendButton = (ImageButton)findViewById(R.id.sendButton);
+        logoutButton = (ImageButton)findViewById(R.id.logoutButton);
 
         amountInput = (EditText)findViewById(R.id.amountInput);
-        sendButton = (ImageButton)findViewById(R.id.sendButton);
 
-        amountInput.setVisibility(View.INVISIBLE);
-        sendButton.setVisibility(View.INVISIBLE);
+        dButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dSelected = true;
+                animateForward(dButton, dText,
+                        0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        0, 244, 0 , 0,
+                        0, -80, 0, -212);
+            }
+        });
+
+        wButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wSelected = true;
+                animateForward(wButton, wText,
+                        0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        0, -244, 0, 0,
+                        0, 94, 0, -212);
+            }
+        });
+
+        dText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dSelected = true;
+                animateForward(dButton, dText,
+                        0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        0, 244, 0 , 0,
+                        0, -80, 0, -212);
+            }
+        });
+
+        wText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wSelected = true;
+                animateForward(wButton, wText,
+                        0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
+                        0, -244, 0, 0,
+                        0, 94, 0, -212);
+            }
+        });
+
+        hButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,8 +178,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    amountInput.setHint("Enter amount");
+                    chooseaction.setText("Choose an action:");
 //                    amountInput.setInputType(InputType.TYPE_NULL);
+                    String amount = amountInput.getText().toString();
                     if (dSelected) {
                         animateBackward(dButton, dText,
                                 0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
@@ -195,6 +203,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        amountInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == keyEvent.ACTION_DOWN) {
+                    if (i == KeyEvent.KEYCODE_ENTER) {
+                        amountInput.setNextFocusDownId(R.id.amountInput);
+                        if (dSelected) deposit();
+                        else if (wSelected) withdraw();
+                    }
+                }
+                return false;
+            }
+        });
+
         activity_main.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -205,19 +227,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        showButtonTouch(dButton);
+        showButtonTouch(wButton);
+        showButtonTouch(dText);
+        showButtonTouch(wText);
+        showButtonTouch(hButton);
+        showButtonTouch(sendButton);
+        showButtonTouch(logoutButton);
 
-        namebox = (TextView)findViewById(R.id.namebox);
-        currentUser = LoginActivity.getCurrentUser();
         String uppercaseUser = currentUser.toUpperCase();
         namebox.setText("WELCOME, \n" + uppercaseUser + " :^)");
 
+        amountInput.setVisibility(View.INVISIBLE);
+        sendButton.setVisibility(View.INVISIBLE);
+
         getBalance();
+    }
+
+    public void showButtonTouch(ImageButton x) {
+        x.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                ImageButton image = (ImageButton) view;
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (view == sendButton) image.setAlpha(0.2f);
+                    else image.setAlpha(0.5f);
+                }
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (view == sendButton) image.setAlpha(0.5f);
+                    else image.setAlpha(1.0f);
+                }
+                return false;
+            }
+        });
     }
 
     public void animateForward(ImageButton x, ImageButton xt,
                                float a, float b, int c, float d, int e, float f,
                                float xstart, float xend, float ystart, float yend,
                                float xstart2, float xend2, float ystart2, float yend2) {
+        dButton.setAlpha(1.0f);
+        wButton.setAlpha(1.0f);
+        dText.setAlpha(1.0f);
+        wText.setAlpha(1.0f);
+
+        chooseaction.setText("You have selected:");
+
         RotateAnimation rotate = new RotateAnimation(a, b, c, d, e, f);
         rotate.setDuration(800);
         rotate.setFillAfter(true);
@@ -268,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         Animation in = new AlphaAnimation(0, 1);
         in.setDuration(800);
         amountInput.startAnimation(in);
-        Animation in2 = new AlphaAnimation(0, 0.8f);
+        Animation in2 = new AlphaAnimation(0, 0.5f);
         in2.setDuration(800);
         sendButton.startAnimation(in2);
         in.setAnimationListener(new Animation.AnimationListener() {
@@ -282,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
                 amountInput.setVisibility(View.VISIBLE);
                 amountInput.requestFocus();
                 sendButton.setVisibility(View.VISIBLE);
-                sendButton.setAlpha(0.8f);
+                sendButton.setAlpha(0.5f);
             }
 
             @Override
@@ -296,6 +351,11 @@ public class MainActivity extends AppCompatActivity {
                                 float a, float b, int c, float d, int e, float f,
                                 float xstart, float xend, float ystart, float yend,
                                 float xstart2, float xend2, float ystart2, float yend2) {
+        dButton.setAlpha(1.0f);
+        wButton.setAlpha(1.0f);
+        dText.setAlpha(1.0f);
+        wText.setAlpha(1.0f);
+
         RotateAnimation rotate = new RotateAnimation(a, b, c, d, e, f);
         rotate.setDuration(800);
         rotate.setFillAfter(true);
@@ -369,20 +429,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-    }
-
-    public void logout() {
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-    }
-
     public void getBalance() {
         firebaseRef.child(currentUser).addValueEventListener(new com.firebase.client.ValueEventListener() {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                balancebox = (TextView)findViewById(R.id.balancebox);
                 User user = dataSnapshot.getValue(User.class);
                 DecimalFormat df = new DecimalFormat("0.00");
                 float balance = user.getBalance();
@@ -406,41 +456,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void withdraw() {
-        firebaseRef.child(currentUser).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-
-                float balance = user.getBalance();
-
-                EditText amountInput = (EditText) findViewById(R.id.amountInput);
-                String amount = amountInput.getText().toString();
-                if (amount.equals("")) return;
-                float fltamount = Float.parseFloat(amount);
-
-                float newBalance = balance - fltamount;
-
-                user.setBalance(newBalance);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                Date date = new Date();
-                String currentDate = dateFormat.format(date);
-                user.addTime(currentDate);
-
-                user.addTransaction(-fltamount);
-
-                firebaseRef.child(user.getName()).setValue(user);
-                amountInput.setText("");
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-             }
-        });
-        getBalance();
-    }
-
     public void deposit() {
         firebaseRef.child(currentUser).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
             @Override
@@ -448,7 +463,6 @@ public class MainActivity extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 float balance = user.getBalance();
 
-                EditText amountInput = (EditText) findViewById(R.id.amountInput);
                 String amount = amountInput.getText().toString();
                 if (amount.equals("")) return;
                 float fltamount = Float.parseFloat(amount);
@@ -465,7 +479,11 @@ public class MainActivity extends AppCompatActivity {
                 user.addTransaction(fltamount);
 
                 firebaseRef.child(user.getName()).setValue(user);
-                amountInput.setText("");
+
+                activity_main.requestFocus();
+                View view = (View)activity_main;
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
             @Override
@@ -474,6 +492,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getBalance();
+    }
+
+    public void withdraw() {
+        firebaseRef.child(currentUser).addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                float balance = user.getBalance();
+
+                String amount = amountInput.getText().toString();
+                if (amount.equals("")) return;
+                float fltamount = Float.parseFloat(amount);
+
+                float newBalance = balance - fltamount;
+
+                if (newBalance < 0) {
+                    amountInput.setText("");
+                    chooseaction.setText("Error: Insufficient Funds");
+                }
+
+                else {
+                    user.setBalance(newBalance);
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                    Date date = new Date();
+                    String currentDate = dateFormat.format(date);
+                    user.addTime(currentDate);
+
+                    user.addTransaction(-fltamount);
+
+                    firebaseRef.child(user.getName()).setValue(user);
+
+                    activity_main.requestFocus();
+                    View view = (View)activity_main;
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        getBalance();
+    }
+
+    @Override
+    public void onBackPressed() { startActivity(new Intent(MainActivity.this, LoginActivity.class)); }
+
+    public void logout() {
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
 }

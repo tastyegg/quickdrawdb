@@ -3,12 +3,16 @@ package com.quickdraw.database.quickdrawdb;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,13 +28,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private static String currentUser;
 
+    EditText nameInput;
+    EditText pinInput;
+
     ImageView check;
     ImageView check2;
     ImageView xmark;
     ImageView xmark2;
 
-    EditText nameInput;
-    EditText pinInput;
+    Button dbCreate;
+    Button loginButton;
+
+    Handler handler;
 
     private static final String FIREBASE_URL = "https://quickdraw-db.firebaseio.com/";
 
@@ -49,26 +58,43 @@ public class LoginActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase(FIREBASE_URL);
 
-        findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
+        handler = new Handler();
+
+        nameInput = (EditText)findViewById(R.id.nameInput);
+        pinInput = (EditText)findViewById(R.id.pinInput);
+
+        check = (ImageView)findViewById(R.id.check);
+        check2 = (ImageView)findViewById(R.id.check2);
+        xmark = (ImageView)findViewById(R.id.xmark);
+        xmark2 = (ImageView)findViewById(R.id.xmark2);
+
+        dbCreate = (Button)findViewById(R.id.dbCreate);
+        loginButton = (Button)findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { login(); }
         });
 
-        findViewById(R.id.dbCreate).setOnClickListener(new View.OnClickListener() {
+        dbCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { createDB(); }
         });
 
-        nameInput = (EditText) findViewById(R.id.nameInput);
-        pinInput = (EditText) findViewById(R.id.pinInput);
+        pinInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == keyEvent.ACTION_DOWN) {
+                    if (i == KeyEvent.KEYCODE_ENTER) {
+                        login();
+                    }
+                }
+                return false;
+            }
+        });
 
-        check = (ImageView)findViewById(R.id.check);
-        check2 = (ImageView)findViewById(R.id.check2);
         check.setVisibility(View.INVISIBLE);
         check2.setVisibility(View.INVISIBLE);
-
-        xmark = (ImageView)findViewById(R.id.xmark);
-        xmark2 = (ImageView)findViewById(R.id.xmark2);
         xmark.setVisibility(View.INVISIBLE);
         xmark2.setVisibility(View.INVISIBLE);
     }
@@ -116,6 +142,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
+        check.setVisibility(View.INVISIBLE);
+        check2.setVisibility(View.INVISIBLE);
         xmark.setVisibility(View.INVISIBLE);
         xmark2.setVisibility(View.INVISIBLE);
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -124,7 +152,12 @@ public class LoginActivity extends AppCompatActivity {
                 String name = nameInput.getText().toString();
                 if (!name.equals("")) {
                     if (dataSnapshot.hasChild(name)) {
-                        check.setVisibility(View.VISIBLE);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                check.setVisibility(View.VISIBLE);
+                            }
+                        }, 300);
                         firebaseRef.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,13 +166,31 @@ public class LoginActivity extends AppCompatActivity {
                                 User user = dataSnapshot.getValue(User.class);
 
                                 if (pin.equals(user.getPin())) {
-                                    check2.setVisibility(View.VISIBLE);
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            check2.setVisibility(View.VISIBLE);
+                                        }
+                                    }, 800);
+
                                     currentUser = user.getName();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                } else {
+
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }, 900);
+                                }
+                                else {
                                     pinInput.setText("");
-                                    xmark2.setVisibility(View.VISIBLE);
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            xmark2.setVisibility(View.VISIBLE);
+                                        }
+                                    }, 800);
                                 }
                             }
 
@@ -150,7 +201,12 @@ public class LoginActivity extends AppCompatActivity {
                         });
                     }
                     else {
-                        xmark.setVisibility(View.VISIBLE);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                xmark.setVisibility(View.VISIBLE);
+                            }
+                        }, 300);
                     }
                 }
             }
