@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.firebase.client.DataSnapshot;
@@ -100,44 +102,42 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void createDB() {
-        String name = "Anna";
+        String[] names = {"Anna", "Bob", "Chris", "Daniel", "Eric", "Janet", "Kevin", "Molly", "Sally", "Terry"};
+        for (String x : names) createRandomUsers(x);
+    }
+
+    public void createRandomUsers(String name) {
         Random r = new Random();
-        int balance = r.nextInt(1000);
+        float balance = r.nextFloat() * (100000 - 1000) + 1000;
         int pinint = r.nextInt(9999);
+        if (pinint < 1000) {
+            pinint += 1000;
+        }
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        String result = df.format(balance);
+        balance = Float.parseFloat(result);
+
         String pin = String.valueOf(pinint);
         User user = new User(name, balance, pin);
-        firebaseRef.child(name).setValue(user);
 
-        name = "Bob";
-        r = new Random();
-        balance = r.nextInt(1000);
-        pinint = r.nextInt(9999);
-        pin = String.valueOf(pinint);
-        user = new User(name, balance, pin);
-        firebaseRef.child(name).setValue(user);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date date = new Date();
+        String currentDate = dateFormat.format(date);
 
-        name = "Chris";
-        r = new Random();
-        balance = r.nextInt(1000);
-        pinint = r.nextInt(9999);
-        pin = String.valueOf(pinint);
-        user = new User(name, balance, pin);
-        firebaseRef.child(name).setValue(user);
+        for (int i = 0; i < 5; i++) {
+            float trans = r.nextFloat() * (10000 - 1000) + 1000;
+            int neg = r.nextInt(100);
+            if (neg % 2 == 0) {
+                trans *= -1;
+            }
+            result = df.format(trans);
+            trans = Float.parseFloat(result);
+            user.addTransaction(trans);
 
-        name = "Dan";
-        r = new Random();
-        balance = r.nextInt(1000);
-        pinint = r.nextInt(9999);
-        pin = String.valueOf(pinint);
-        user = new User(name, balance, pin);
-        firebaseRef.child(name).setValue(user);
+            user.addTime(currentDate);
+        }
 
-        name = "Eric";
-        r = new Random();
-        balance = r.nextInt(1000);
-        pinint = r.nextInt(9999);
-        pin = String.valueOf(pinint);
-        user = new User(name, balance, pin);
         firebaseRef.child(name).setValue(user);
     }
 

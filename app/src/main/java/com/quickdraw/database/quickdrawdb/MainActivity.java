@@ -422,12 +422,13 @@ public class MainActivity extends AppCompatActivity {
         out.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                amountInput.setHint("Enter amount");
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 amountInput.setText("");
+                amountInput.setHint("Enter amount");
                 amountInput.setVisibility(View.INVISIBLE);
                 sendButton.setVisibility(View.INVISIBLE);
             }
