@@ -6,47 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/custom"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.quickdraw.database.quickdrawdb.MainActivity">
 
-    <EditText
-        android:layout_width="290dp"
-        android:layout_height="40dp"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/amountInput"
-        android:hint="Amount"
-        android:paddingLeft="113dp"
-        android:background="@color/white"
-        android:layout_marginBottom="48dp"
-        android:layout_above="@+id/wButton"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Withdraw"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/wButton"
-        android:layout_marginBottom="18dp"
-        android:layout_above="@+id/dButton"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Transaction History"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:id="@+id/hButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/dButton" />
-
-    <Button
-        android:text="Deposit"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/dButton"
-        android:layout_marginBottom="18dp"
-        android:layout_above="@+id/hButton"
-        android:layout_alignStart="@+id/wButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,15 +36,6 @@
         android:layout_below="@+id/namebox"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="1080px"
-        android:layout_height="1240px"
-        app:srcCompat="@color/custom2"
-        android:id="@+id/imageView3"
-        android:translationZ="-1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:text="Choose an action:"
         android:layout_width="wrap_content"
@@ -90,9 +44,19 @@
         android:textColor="@color/customlighter"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:id="@+id/amountbox"
+        android:id="@+id/chooseaction"
         android:layout_alignTop="@+id/imageView3"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="1080px"
+        android:layout_height="800px"
+        app:srcCompat="@color/custom2"
+        android:id="@+id/imageView3"
+        android:translationZ="-1dp"
+        android:layout_marginTop="187dp"
+        android:layout_alignParentStart="true" />
+
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -104,5 +68,89 @@
         android:scaleY="0.3"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="316px"
+        android:layout_height="305px"
+        app:srcCompat="@drawable/historyfull"
+        android:id="@+id/hButton"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
+
+    <ImageButton
+        android:layout_width="258px"
+        android:layout_height="150px"
+        app:srcCompat="@drawable/deposittext"
+        android:id="@+id/dText"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="3dp"
+        android:layout_below="@+id/dButton"
+        android:layout_alignStart="@+id/dButton" />
+
+    <ImageButton
+        android:layout_width="272px"
+        android:layout_height="272px"
+        app:srcCompat="@drawable/depositbutton"
+        android:id="@+id/dButton"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="60dp" />
+
+    <ImageButton
+        android:layout_width="272px"
+        android:layout_height="272px"
+        app:srcCompat="@drawable/withdrawbutton"
+        android:id="@+id/wButton"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_alignTop="@+id/dButton"
+        android:layout_alignStart="@+id/wText"
+        android:layout_marginStart="13dp" />
+
+    <ImageButton
+        android:layout_width="337px"
+        android:layout_height="150px"
+        app:srcCompat="@drawable/withdrawtext"
+        android:id="@+id/wText"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_marginEnd="50dp"
+        android:layout_below="@+id/wButton"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:textColor="@color/white"
+        android:id="@+id/amountInput"
+        android:textSize="25dp"
+        android:hint="Enter amount"
+        android:textColorHint="@color/customlighter"
+        android:backgroundTint="@color/customlighter"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/dButton"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/sendbutton"
+        android:id="@+id/sendButton"
+        android:background="@null"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:layout_marginLeft="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_alignBottom="@+id/amountInput"
+        android:layout_toEndOf="@+id/amountInput" />
+
 
 </RelativeLayout>

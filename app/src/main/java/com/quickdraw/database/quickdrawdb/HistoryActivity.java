@@ -148,16 +148,16 @@ public class HistoryActivity extends AppCompatActivity {
                             transactions[i] *= -1;
                             result = df.format(transactions[i]);
                             trans[i].setText(" - $" + result + "\n");
-                            trans[i].setTextColor(Color.RED);
+                            trans[i].setTextColor(Color.rgb(228, 88, 88));
                             whens[i].setText(timedates[i]);
-                            whens[i].setTextColor(Color.RED);
+                            whens[i].setTextColor(Color.rgb(228, 88, 88));
                         }
                         else {
                             result = df.format(transactions[i]);
                             trans[i].setText("+ $" + result + "\n");
-                            trans[i].setTextColor(Color.GREEN);
+                            trans[i].setTextColor(Color.rgb(91, 228, 88));
                             whens[i].setText(timedates[i]);
-                            whens[i].setTextColor(Color.GREEN);
+                            whens[i].setTextColor(Color.rgb(91, 228, 88));
                         }
                     }
                 }

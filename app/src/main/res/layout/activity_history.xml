@@ -133,8 +133,8 @@
         android:textSize="25dp"
         android:id="@+id/trans1"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/amountbox"
-        android:layout_alignStart="@+id/amountbox" />
+        android:layout_below="@+id/chooseaction"
+        android:layout_alignStart="@+id/chooseaction" />
 
     <TextView
         android:text="When1"
@@ -167,7 +167,7 @@
         android:textColor="@color/customlighter"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:id="@+id/amountbox"
+        android:id="@+id/chooseaction"
         android:layout_marginEnd="8dp"
         android:layout_below="@+id/currentbalance"
         android:layout_alignParentEnd="true" />
