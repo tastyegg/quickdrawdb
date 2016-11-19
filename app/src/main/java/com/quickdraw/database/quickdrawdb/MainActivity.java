@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean dSelected = false;
     boolean wSelected = false;
+    boolean deposited = false;
+    boolean withdrew = false;
 
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dSelected = true;
+                deposited = false;
+                chooseaction.setText("You have selected:");
                 animateForward(dButton, dText,
                         0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                         0, 244, 0 , 0,
@@ -115,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 wSelected = true;
+                withdrew = false;
+                chooseaction.setText("You have selected:");
                 animateForward(wButton, wText,
                         0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                         0, -244, 0, 0,
@@ -126,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dSelected = true;
+                deposited = false;
+                chooseaction.setText("You have selected:");
                 animateForward(dButton, dText,
                         0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                         0, 244, 0 , 0,
@@ -137,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 wSelected = true;
+                withdrew = false;
+                chooseaction.setText("You have selected:");
                 animateForward(wButton, wText,
                         0, -360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                         0, -244, 0, 0,
@@ -178,7 +188,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    chooseaction.setText("Choose an action:");
+                    if (deposited == false && withdrew == false) {
+                        chooseaction.setText("Choose an action:");
+                    }
 //                    amountInput.setInputType(InputType.TYPE_NULL);
                     String amount = amountInput.getText().toString();
                     if (dSelected) {
@@ -270,8 +282,6 @@ public class MainActivity extends AppCompatActivity {
         wButton.setAlpha(1.0f);
         dText.setAlpha(1.0f);
         wText.setAlpha(1.0f);
-
-        chooseaction.setText("You have selected:");
 
         RotateAnimation rotate = new RotateAnimation(a, b, c, d, e, f);
         rotate.setDuration(800);
@@ -480,6 +490,11 @@ public class MainActivity extends AppCompatActivity {
 
                 firebaseRef.child(user.getName()).setValue(user);
 
+                deposited = true;
+                DecimalFormat df = new DecimalFormat("0.00");
+                String result = df.format(fltamount);
+                chooseaction.setText("You deposited $" + result + " !");
+
                 activity_main.requestFocus();
                 View view = (View)activity_main;
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -524,6 +539,11 @@ public class MainActivity extends AppCompatActivity {
                     user.addTransaction(-fltamount);
 
                     firebaseRef.child(user.getName()).setValue(user);
+
+                    withdrew = true;
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    String result = df.format(fltamount);
+                    chooseaction.setText("You withdrew $" + result + " !");
 
                     activity_main.requestFocus();
                     View view = (View)activity_main;
