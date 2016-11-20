@@ -3,12 +3,16 @@ package com.quickdraw.database.quickdrawdb;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,6 +33,7 @@ import com.firebase.client.ValueEventListener;
 public class LoginActivity extends AppCompatActivity {
 
     private static String currentUser;
+    private static String currentUserName;
 
     EditText nameInput;
     EditText pinInput;
@@ -73,6 +78,18 @@ public class LoginActivity extends AppCompatActivity {
         dbCreate = (Button)findViewById(R.id.dbCreate);
         loginButton = (Button)findViewById(R.id.loginButton);
 
+//        pinInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        pinInput.setTypeface(Typeface.DEFAULT);
+        pinInput.setTransformationMethod(new PasswordTransformationMethod());
+
+        xmark.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                nameInput.setText("");
+                return false;
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { login(); }
@@ -103,12 +120,16 @@ public class LoginActivity extends AppCompatActivity {
 
     public void createDB() {
         String[] names = {"Anna", "Bob", "Chris", "Daniel", "Eric", "Janet", "Kevin", "Molly", "Sally", "Terry"};
-        for (String x : names) createRandomUsers(x);
+        for (int i = 0; i < names.length; i++) {
+            createRandomUsers(names[i], i);
+        }
     }
 
-    public void createRandomUsers(String name) {
+    public void createRandomUsers(String name, int pos) {
+        String userID = "user00" + pos;
+
         Random r = new Random();
-        float balance = r.nextFloat() * (100000 - 1000) + 1000;
+        float balance = r.nextFloat() * (100000 - 40000) + 40000;
         int pinint = r.nextInt(9999);
         if (pinint < 1000) {
             pinint += 1000;
@@ -119,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         balance = Float.parseFloat(result);
 
         String pin = String.valueOf(pinint);
-        User user = new User(name, balance, pin);
+        User user = new User(userID, name, balance, pin);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
@@ -138,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
             user.addTime(currentDate);
         }
 
-        firebaseRef.child(name).setValue(user);
+        firebaseRef.child(userID).setValue(user);
     }
 
     public void login() {
@@ -149,16 +170,16 @@ public class LoginActivity extends AppCompatActivity {
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = nameInput.getText().toString();
-                if (!name.equals("")) {
-                    if (dataSnapshot.hasChild(name)) {
+                String id = nameInput.getText().toString();
+                if (!id.equals("")) {
+                    if (dataSnapshot.hasChild(id)) {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 check.setVisibility(View.VISIBLE);
                             }
                         }, 300);
-                        firebaseRef.child(name).addListenerForSingleValueEvent(new ValueEventListener() {
+                        firebaseRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String pin = pinInput.getText().toString();
@@ -173,7 +194,8 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     }, 800);
 
-                                    currentUser = user.getName();
+                                    currentUser = user.getUserID();
+                                    currentUserName = user.getName();
 
                                     handler.postDelayed(new Runnable() {
                                         @Override
@@ -220,6 +242,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static String getCurrentUser() {
         return currentUser;
+    }
+
+    public static String getCurrentUserName() {
+        return currentUserName;
     }
 
 }

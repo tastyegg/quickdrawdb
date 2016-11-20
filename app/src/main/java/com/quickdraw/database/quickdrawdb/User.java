@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 public class User {
 
+    private String userID;
     private String name;
     private float balance;
     private float[] history = new float[5];
@@ -19,12 +20,14 @@ public class User {
 
     }
 
-    public User(String name, float balance, String pin) {
+    public User(String userID, String name, float balance, String pin) {
+        this.userID = userID;
         this.name = name;
         this.balance = balance;
         this.pin = pin;
     }
 
+    public String getUserID() { return userID; }
 
     public String getName() {
         return name;

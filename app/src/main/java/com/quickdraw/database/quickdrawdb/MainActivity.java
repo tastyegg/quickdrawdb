@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference mUserReference;
     private String currentUser;
+    private String currentUserName;
 
     private static final String FIREBASE_URL = "https://quickdraw-db.firebaseio.com/";
 
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseRef = new Firebase(FIREBASE_URL);
 
         currentUser = LoginActivity.getCurrentUser();
+        currentUserName = LoginActivity.getCurrentUserName();
 
         activity_main = (RelativeLayout)findViewById(R.id.activity_main);
 
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         showButtonTouch(sendButton);
         showButtonTouch(logoutButton);
 
-        String uppercaseUser = currentUser.toUpperCase();
+        String uppercaseUser = currentUserName.toUpperCase();
         namebox.setText("WELCOME, \n" + uppercaseUser + " :^)");
 
         amountInput.setVisibility(View.INVISIBLE);
