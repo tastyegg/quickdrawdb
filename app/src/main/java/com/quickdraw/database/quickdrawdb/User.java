@@ -11,20 +11,21 @@ public class User {
 
     private String userID;
     private String name;
-    private float balance;
-    private float[] history = new float[5];
-    private String[] times = {" ", " ", " ", " ", " "};
     private String pin;
+
+    private float balance;
+    private float[] transactions = new float[5];
+    private String[] dates = {" ", " ", " ", " ", " "};
 
     public User() {
 
     }
 
-    public User(String userID, String name, float balance, String pin) {
+    public User(String userID, String name, String pin, float balance) {
         this.userID = userID;
         this.name = name;
-        this.balance = balance;
         this.pin = pin;
+        this.balance = balance;
     }
 
     public String getUserID() { return userID; }
@@ -32,6 +33,8 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public String getPin() { return pin; }
 
     public float getBalance() {
         return balance;
@@ -41,28 +44,25 @@ public class User {
         balance = newBalance;
     }
 
-    public float[] getHistory() {
-        return history;
+    public float[] getTransactions() {
+        return transactions;
     }
 
-    public String[] getTimes() {
-        return times;
+    public String[] getDates() {
+        return dates;
     }
-
-    public String getPin() { return pin; }
 
     public void addTransaction(float amount) {
-        for (int i = history.length - 1; i > 0; i--) {
-            history[i] = history[i-1];
+        for (int i = transactions.length - 1; i > 0; i--) {
+            transactions[i] = transactions[i-1];
         }
-        history[0] = amount;
+        transactions[0] = amount;
     }
 
-    public void addTime(String time) {
-        for (int i = times.length - 1; i > 0; i--) {
-            times[i] = times[i-1];
+    public void addDate(String date) {
+        for (int i = dates.length - 1; i > 0; i--) {
+            dates[i] = dates[i-1];
         }
-        times[0] = time;
+        dates[0] = date;
     }
-
 }

@@ -128,8 +128,8 @@ public class HistoryActivity extends AppCompatActivity {
                 }
                 currentbalance.setTextColor(Color.CYAN);
 
-                float[] transactions = user.getHistory();
-                String[] timedates = user.getTimes();
+                float[] transactions = user.getTransactions();
+                String[] timedates = user.getDates();
 
                 for (int i = 0; i < transactions.length; i++) {
                     if (transactions[i] == 0) {

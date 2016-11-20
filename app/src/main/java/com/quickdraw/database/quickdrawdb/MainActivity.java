@@ -487,11 +487,11 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 Date date = new Date();
                 String currentDate = dateFormat.format(date);
-                user.addTime(currentDate);
+                user.addDate(currentDate);
 
                 user.addTransaction(fltamount);
 
-                firebaseRef.child(user.getName()).setValue(user);
+                firebaseRef.child(user.getUserID()).setValue(user);
 
                 deposited = true;
                 DecimalFormat df = new DecimalFormat("0.00");
@@ -537,11 +537,11 @@ public class MainActivity extends AppCompatActivity {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                     Date date = new Date();
                     String currentDate = dateFormat.format(date);
-                    user.addTime(currentDate);
+                    user.addDate(currentDate);
 
                     user.addTransaction(-fltamount);
 
-                    firebaseRef.child(user.getName()).setValue(user);
+                    firebaseRef.child(user.getUserID()).setValue(user);
 
                     withdrew = true;
                     DecimalFormat df = new DecimalFormat("0.00");

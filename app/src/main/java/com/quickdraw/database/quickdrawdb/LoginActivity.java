@@ -129,18 +129,23 @@ public class LoginActivity extends AppCompatActivity {
         String userID = "user00" + pos;
 
         Random r = new Random();
-        float balance = r.nextFloat() * (100000 - 40000) + 40000;
+
         int pinint = r.nextInt(9999);
         if (pinint < 1000) {
             pinint += 1000;
         }
 
+        float balance = r.nextFloat() * (100000 - 40000) + 40000;
+        float balance2 = r.nextFloat() * (100000 - 40000) + 40000;
+
         DecimalFormat df = new DecimalFormat("0.00");
         String result = df.format(balance);
         balance = Float.parseFloat(result);
+        result = df.format(balance2);
+        balance2 = Float.parseFloat(result);
 
         String pin = String.valueOf(pinint);
-        User user = new User(userID, name, balance, pin);
+        User user = new User(userID, name, pin, balance);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
@@ -156,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
             trans = Float.parseFloat(result);
             user.addTransaction(trans);
 
-            user.addTime(currentDate);
+            user.addDate(currentDate);
         }
 
         firebaseRef.child(userID).setValue(user);

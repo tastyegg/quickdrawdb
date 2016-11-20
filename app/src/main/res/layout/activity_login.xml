@@ -9,7 +9,7 @@
     tools:context="com.quickdraw.database.quickdrawdb.LoginActivity">
 
     <Button
-        android:text="language | dbCreate | new user"
+        android:text="Reset Database"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
