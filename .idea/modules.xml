@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/QuickdrawDB.iml" filepath="$PROJECT_DIR$/QuickdrawDB.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quickdrawdb.iml" filepath="$PROJECT_DIR$/quickdrawdb.iml" />
     </modules>
   </component>
 </project>

@@ -478,10 +478,17 @@ public class MainActivity extends AppCompatActivity {
 
                 String amount = amountInput.getText().toString();
                 if (amount.equals("")) return;
+
                 float fltamount = Float.parseFloat(amount);
 
                 float newBalance = balance + fltamount;
 
+                //Make intent to NFCActivity
+                Intent intent = new Intent(MainActivity.this, NFCActivity.class);
+                intent.putExtra("Quickdraw Transaction Details", user.getUserID() + " Deposit " + Float.parseFloat(amount));
+                startActivity(intent);
+
+                /* // Delegate ATM Transaction
                 user.setBalance(newBalance);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -492,6 +499,7 @@ public class MainActivity extends AppCompatActivity {
                 user.addTransaction(fltamount);
 
                 firebaseRef.child(user.getUserID()).setValue(user);
+                */
 
                 deposited = true;
                 DecimalFormat df = new DecimalFormat("0.00");
@@ -529,9 +537,13 @@ public class MainActivity extends AppCompatActivity {
                 if (newBalance < 0) {
                     amountInput.setText("");
                     chooseaction.setText("Error: Insufficient Funds");
-                }
+                } else {
+                    //Make intent to NFCActivity
+                    Intent intent = new Intent(MainActivity.this, NFCActivity.class);
+                    intent.putExtra("Quickdraw Transaction Details", user.getUserID() + " Withdraw " + Float.parseFloat(amount));
+                    startActivity(intent);
 
-                else {
+                    /* // Delegate ATM Transaction
                     user.setBalance(newBalance);
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -542,6 +554,7 @@ public class MainActivity extends AppCompatActivity {
                     user.addTransaction(-fltamount);
 
                     firebaseRef.child(user.getUserID()).setValue(user);
+                    */
 
                     withdrew = true;
                     DecimalFormat df = new DecimalFormat("0.00");
