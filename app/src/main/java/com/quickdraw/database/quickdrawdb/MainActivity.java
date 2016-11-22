@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         showButtonTouch(logoutButton);
 
         String uppercaseUser = currentUserName.toUpperCase();
-        namebox.setText("WELCOME, \n" + uppercaseUser + " :^)");
+        namebox.setText("WELCOME, \n" + uppercaseUser + " \uD83D\uDE00");
 
         amountInput.setVisibility(View.INVISIBLE);
         sendButton.setVisibility(View.INVISIBLE);

@@ -3,14 +3,18 @@ package com.quickdraw.database.quickdrawdb;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.Image;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,11 @@ public class NFCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.rgb(61, 61, 101));
+        }
 
         setContentView(R.layout.activity_nfc);
 
@@ -52,7 +61,7 @@ public class NFCActivity extends AppCompatActivity {
 
         CheckNFCEnabled();
 
-        //Pending indent
+        //Pending intent
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
@@ -66,7 +75,7 @@ public class NFCActivity extends AppCompatActivity {
         String message = getIntent().getStringExtra("Quickdraw Transaction Details");
         SetMessage(message);
 
-        tv.setText("Please use Android Beam with your closest ATM");
+        tv.setText("Android Beam your transaction\nto the nearest ATM");
     }
 
     void SetMessage(String text) {
